@@ -18,12 +18,10 @@ public class RTSCamera : MonoBehaviour {
 
     private Vector3 desiredPosition;
 
-	// Use this for initialization
 	void Start () {
         desiredPosition = transform.position;
 	}
-	
-	// Update is called once per frame
+
 	void Update () {
         float x = 0, y = 0, z = 0;
         float speed = ScrollSpeed * Time.deltaTime;
@@ -38,20 +36,25 @@ public class RTSCamera : MonoBehaviour {
         else if (Input.mousePosition.y > Screen.height - ScrollZone)
             z += speed;
 
-        if(Input.mouseScrollDelta.y > 0)
+        if (Input.mouseScrollDelta.y > 0)
         {
             y -= 5;
-        } 
+            if (transform.position.y > ZoomMin + 5)
+                z += 3;
+        }
         else if (Input.mouseScrollDelta.y < 0)
         {
+            print(y);
             y += 5;
+            if (transform.position.y < ZoomMax - 5)
+                z -= 3;
         }
 
         Vector3 move = new Vector3(x, y, z) + desiredPosition;
         move.x = Mathf.Clamp(move.x, xMin, xMax);
         move.z = Mathf.Clamp(move.z, zMin, zMax);
         move.y = Mathf.Clamp(move.y, ZoomMin, ZoomMax);
-        desiredPosition = move;
+        desiredPosition = move;    
         transform.position = Vector3.Lerp(transform.position, desiredPosition, 0.2f);
 
 

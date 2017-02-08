@@ -68,7 +68,6 @@ public class GUISelectorBox : MonoBehaviour
         {
             selectionBox.sizeDelta = Vector2.zero;
             CC.UserIsDragging = false;
-            CC.FinishedDragOnThisFrame = true;
         }
 
 

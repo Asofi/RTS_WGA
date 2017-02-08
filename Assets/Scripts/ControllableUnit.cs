@@ -17,8 +17,10 @@ public class ControllableUnit : BaseUnit {
 
     public NavMeshAgent mAgent;
     public NavMeshObstacle mObstacle;
+    public bool isCameraLockedOn = false;
 
     Renderer mRenderer;
+    HighlightsFX highlight;
 
     // Use this for initialization
     void Start()
@@ -26,6 +28,7 @@ public class ControllableUnit : BaseUnit {
         mAgent = GetComponent<NavMeshAgent>();
         mObstacle = GetComponent<NavMeshObstacle>();
         mRenderer = GetComponent<Renderer>();
+        highlight = Camera.main.GetComponent<HighlightsFX>();
     }
 
     // Update is called once per frame
@@ -34,36 +37,22 @@ public class ControllableUnit : BaseUnit {
         switch (UnitState)
         {
             case UnitStates.WALKING:
-                mObstacle.enabled = false;
-                mAgent.enabled = true;
+                //mObstacle.enabled = false;
+                //mAgent.enabled = true;
                 break;
 
             case UnitStates.IDLE:
-                mAgent.enabled = false;
-                mObstacle.enabled = true;
+                //mAgent.enabled = false;
+                //mObstacle.enabled = true;
                 break;
         }
 
         //print(gameObject.name + "       " + CharactersController.UnitInsideDrag(ScreenPos));
         if (!IsSelected)
         {
-            mRenderer.material.color = Color.white;
-            ScreenPos = Camera.main.WorldToScreenPoint(transform.position);
-
-            if (CharactersController.UnitWithinScreenSpace(ScreenPos))
-            {
-                if(!IsOnScreen)
-                {
-                    CharactersController.UnitsOnScreen.Add(gameObject);
-                    IsOnScreen = true;
-                }
-            } else
-            {
-                if (IsOnScreen)
-                    CharactersController.RemoveFromOnScreenUnits(gameObject);
-            }
+            highlight.enabled = false;
         } else
-            mRenderer.material.color = Color.red;
+            highlight.enabled = true;
 
         if (mAgent.pathStatus == NavMeshPathStatus.PathComplete && UnitState == UnitStates.WALKING)
         {
