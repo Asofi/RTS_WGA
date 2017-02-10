@@ -19,7 +19,7 @@ public class ControllableUnit : BaseUnit {
     public NavMeshObstacle mObstacle;
     public bool isCameraLockedOn = false;
 
-    Renderer mRenderer;
+    Renderer[] mRenderers;
     HighlightsFX highlight;
 
     // Use this for initialization
@@ -27,7 +27,7 @@ public class ControllableUnit : BaseUnit {
     {
         mAgent = GetComponent<NavMeshAgent>();
         mObstacle = GetComponent<NavMeshObstacle>();
-        mRenderer = GetComponent<Renderer>();
+        mRenderers = GetComponentsInChildren<Renderer>();
         highlight = Camera.main.GetComponent<HighlightsFX>();
     }
 
@@ -47,18 +47,25 @@ public class ControllableUnit : BaseUnit {
                 break;
         }
 
-        //print(gameObject.name + "       " + CharactersController.UnitInsideDrag(ScreenPos));
-        if (!IsSelected)
-        {
-            highlight.enabled = false;
-        } else
-            highlight.enabled = true;
-
         if (mAgent.pathStatus == NavMeshPathStatus.PathComplete && UnitState == UnitStates.WALKING)
         {
             UnitState = UnitStates.IDLE;
 
         }
+    }
+
+    public void SelectUnit()
+    {
+        foreach (Renderer rend in mRenderers)
+            highlight.ObjectRenderers.Add(rend);
+        IsSelected = true;
+        //highlight.ObjectRenderers.AddRange();
+    }
+
+    public void DeselectUnit()
+    {
+        highlight.ObjectRenderers.Clear();
+        IsSelected = false;
     }
 
     public void MoveTo(Vector3 position)

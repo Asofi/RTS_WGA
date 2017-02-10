@@ -28,14 +28,14 @@ public class CharactersController : MonoBehaviour {
             if (Physics.Raycast(ray, out hit) && hit.transform.CompareTag("Unit"))
             {
                 ControllableUnit unit = hit.transform.GetComponent<ControllableUnit>();
-                unit.IsSelected = true;
+                unit.SelectUnit();
                 SelectedUnit = unit;
             }
             else
             {
                 if(SelectedUnit != null)
                 {
-                    SelectedUnit.IsSelected = false;
+                    SelectedUnit.DeselectUnit();
                     SelectedUnit = null;
                 }
             }

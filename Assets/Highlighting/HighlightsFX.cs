@@ -33,7 +33,7 @@ public class HighlightsFX : MonoBehaviour
 
 	#region public vars
 
-    public Renderer[] objectRenderer;
+    public List<Renderer> ObjectRenderers;
 
 	public HighlightType m_selectionType = HighlightType.Glow;
 	public SortingType m_sortingType = SortingType.DepthFilter;	
@@ -112,8 +112,8 @@ public class HighlightsFX : MonoBehaviour
 		RenderTargetIdentifier rtid = new RenderTargetIdentifier(rt);
 		m_renderBuffer.SetRenderTarget( rtid );
 			
-        for (int i = 0; i < objectRenderer.Length; i++)
-            m_renderBuffer.DrawRenderer( objectRenderer[i], m_highlightMaterial, 0, (int) m_sortingType );
+        for (int i = 0; i < ObjectRenderers.Count; i++)
+            m_renderBuffer.DrawRenderer( ObjectRenderers[i], m_highlightMaterial, 0, (int) m_sortingType );
 
 		RenderTexture.active = rt;
 		Graphics.ExecuteCommandBuffer(m_renderBuffer);
